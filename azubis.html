@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neue Azubis</title>
+    <link rel="stylesheet" href="test.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Unser Azubis-Team</h1>
+        <button class="view-toggle" onclick="toggleView()">
+            <span id="viewText">Galerie Ansicht</span>
+        </button>
+    </div>
+        <h3 class="lernspan">Lerne unsere Azubis kennen</h3>
+
+    <div class="container" id="carouselView">
+        <div class="carousel-container">
+            <button class="nav-button prev" onclick="navigate(-1)">‹</button>
+            <button class="nav-button next" onclick="navigate(1)">›</button>
+            
+            <div class="carousel">
+                <div class="carousel-track" id="track"></div>
+            </div>
+
+            <div class="indicators" id="indicators"></div>
+        </div>
+    </div>
+
+    <div class="gallery-view" id="galleryView"></div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+
+    <script>
+        const people = [
+        {
+            initials: "OM",
+            name: "Oleksandr Myroniuk",
+            role: "Fachinformatiker für Anwendungsentwicklung",
+            link: "https://teams.microsoft.com/l/chat/0/0?users=oleksandr.myroniuk@interhyp.de",
+            year: "1. Lehrjahr",
+            alter: 20,
+            description: "Interessiert an Softwareentwicklung und modernen Technologien. Arbeitet gerne im Team und legt Wert auf sauberen Code.",
+            fullProfile: {
+                about: "Ich bin motiviert, meine Kenntnisse in der Anwendungsentwicklung zu erweitern und praktische Erfahrungen zu sammeln. Besonders spannend finde ich die Arbeit mit agilen Methoden und die Umsetzung von Projekten in einem professionellen Umfeld.",
+                skills: ["Java", "Python", "SQL", "JavaScript", "Git", "Agile Methoden"],
+                goals: "Mein Ziel ist es, ein fundiertes Verständnis für Softwarearchitektur und Best Practices zu entwickeln und mich langfristig als Full-Stack-Entwickler zu etablieren.",
+                hobbies: "In meiner Freizeit beschäftige ich mich gerne mit neuen Technologien, lese Fachartikel und programmiere kleine Projekte."
+            }
+        },
+        {
+            initials: "OK",
+            name: "Oleksandr Kondratov",
+            role: "Fachinformatiker für Anwendungsentwicklung",
+            link: "https://teams.microsoft.com/l/chat/0/0?users=oleksandr.kondratov@interhyp.de",
+            year: "1. Lehrjahr",
+            alter: 22,
+            description: "Hat ein starkes Interesse an Webentwicklung und Cloud-Technologien. Bringt kreative Ideen in Projekte ein.",
+            fullProfile: {
+                about: "Ich möchte meine Fähigkeiten in der Entwicklung von modernen Webanwendungen ausbauen und mich mit Cloud-Architekturen vertraut machen. Teamarbeit und der Austausch von Wissen sind mir besonders wichtig.",
+                skills: ["C#", ".NET", "React", "TypeScript", "Docker", "Cloud Computing"],
+                goals: "Ich strebe an, ein Experte für skalierbare Weblösungen zu werden und mich in Richtung Cloud-Engineering weiterzuentwickeln.",
+                hobbies: "Ich interessiere mich für neue Frameworks, spiele gerne Schach und experimentiere mit kleinen Coding-Projekten."
+            }
+        },
+        {
+            initials: "OT",
+            name: "Oles-Bohdan Topilko",
+            role: "Fachinformatiker für Anwendungsentwicklung",
+            alter: 21,
+            year: "1. Lehrjahr",
+            link: "https://teams.microsoft.com/l/chat/0/0?users=oles-bohdan.topilko@interhyp.de",
+            description: "Begeistert von Backend-Entwicklung und Datenbanken. Hat ein Auge für Details und Qualität.",
+            fullProfile: {
+                about: "Ich möchte meine Kenntnisse in der Backend-Entwicklung vertiefen und mich auf performante und sichere Anwendungen spezialisieren. Datenbankdesign und API-Entwicklung sind meine Schwerpunkte.",
+                skills: ["Python", "Django", "JavaScript", "Vue.js", "PostgreSQL", "REST APIs"],
+                goals: "Mein Ziel ist es, robuste und skalierbare Systeme zu entwickeln und mich in Richtung Softwarearchitektur weiterzubilden.",
+                hobbies: "Ich lese gerne über neue Technologien, spiele Videospiele und beschäftige mich mit Open-Source-Projekten."
+            }
+        },
+        {
+            initials: "NM",
+            name: "Neuman Moritz",
+            role: "Fachinformatiker für Systemintegration",
+            alter: 17,
+            year: "1. Lehrjahr",
+            link: "https://teams.microsoft.com/l/chat/0/0?users=moritz.neumann@interhyp.de",
+            description: "Interessiert an Netzwerktechnik und IT-Sicherheit. Hat Spaß daran, komplexe Systeme zu verstehen.",
+            fullProfile: {
+                about: "Ich möchte ein tiefes Verständnis für Netzwerke und IT-Infrastrukturen entwickeln. Besonders spannend finde ich die Themen Virtualisierung und Security.",
+                skills: ["Linux Administration", "Netzwerktechnik", "Windows Server", "VMware", "IT-Security", "PowerShell"],
+                goals: "Mein Ziel ist es, ein Experte für sichere und stabile IT-Systeme zu werden und mich in Richtung IT-Security zu spezialisieren.",
+                hobbies: "Ich baue gerne eigene Server-Setups, spiele Fußball und interessiere mich für Hardware-Tuning."
+            }
+        },
+        {
+            initials: "AA",
+            name: "Ackah-Radic Antoine",
+            role: "Fachinformatiker für Systemintegration",
+            alter: 16,
+            year: "1. Lehrjahr",
+            link: "https://teams.microsoft.com/l/chat/0/0?users=antoine.ackah-radic@interhyp.de",
+            description: "Hat ein großes Interesse an Cloud-Lösungen und Netzwerkadministration. Arbeitet strukturiert und lösungsorientiert.",
+            fullProfile: {
+                about: "Ich möchte meine Kenntnisse in der Administration von Netzwerken und Cloud-Diensten erweitern. Besonders wichtig ist mir die Automatisierung von Prozessen und die Sicherstellung von Stabilität.",
+                skills: ["Cisco Networking", "Active Directory", "Azure", "Monitoring Tools", "Backup Solutions", "Hardware Support"],
+                goals: "Mein Ziel ist es, ein Spezialist für hybride IT-Infrastrukturen zu werden und mich in Richtung Cloud-Architektur weiterzuentwickeln.",
+                hobbies: "Ich interessiere mich für neue Technologien, spiele gerne Basketball und bastle an Hardware-Projekten."
+            }
+        }
+        ];
+
+        let currentIndex = 0;
+        let isGalleryView = false;
+
+        function initCarousel() {
+            const track = document.getElementById('track');
+            const indicatorsContainer = document.getElementById('indicators');
+
+            people.forEach((person, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => openModal(index);
+                card.innerHTML = `
+                    <div class="profile-section">
+                        <div class="profile-pic">${person.initials}</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="name">${person.name}</div>
+                        <div class="short-info">${person.role}</div>
+                        <div class="year-info" id="years">${person.year}</div>
+                    </div>
+                    <div class="description-section">
+                        <div class="description">${person.description}</div>
+                    </div>
+                `;
+                track.appendChild(card);
+
+                const indicator = document.createElement('div');
+                indicator.className = 'indicator';
+                if (index === 0) indicator.classList.add('active');
+                indicator.onclick = () => goToSlide(index);
+                indicatorsContainer.appendChild(indicator);
+            });
+        }
+
+        function initGallery() {
+            const galleryView = document.getElementById('galleryView');
+
+            people.forEach((person, index) => {
+                const card = document.createElement('div');
+                card.className = 'gallery-card';
+                card.onclick = () => openModal(index);
+                card.innerHTML = `
+                    <div class="profile-pic">${person.initials}</div>
+                    <div class="name">${person.name}</div>
+                    <div class="short-info">${person.role}</div>
+                    <div class="year-info">${person.year}</div>
+                `;
+                galleryView.appendChild(card);
+            });
+        }
+
+        function toggleView() {
+            isGalleryView = !isGalleryView;
+            const carouselView = document.getElementById('carouselView');
+            const galleryView = document.getElementById('galleryView');
+            const viewText = document.getElementById('viewText');
+            if (isGalleryView) {
+                carouselView.style.display = 'none';
+                galleryView.classList.add('active');
+                viewText.textContent = 'Karussell Ansicht';
+            } else {
+                carouselView.style.display = 'block';
+                galleryView.classList.remove('active');
+                viewText.textContent = 'Galerie Ansicht';
+                }
+        }
+
+        function updateCarousel() {
+            const track = document.getElementById('track');
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            
+            const indicators = document.getElementById('indicators').children;
+            for (let i = 0; i < indicators.length; i++) {
+                indicators[i].classList.toggle('active', i === currentIndex);
+            }
+        }
+
+        function navigate(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = people.length - 1;
+            if (currentIndex >= people.length) currentIndex = 0;
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentIndex = index;
+            updateCarousel();
+        }
+
+        function openModal(index) {
+            const person = people[index];
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+
+            modalContent.innerHTML = `
+                <button class="close-modal" onclick="closeModal()">×</button>
+                <div class="modal-header">
+                    <div class="modal-profile-pic">${person.initials}</div>
+                    <div class="modal-info">
+                        <div class="modal-name">${person.name}</div>
+                         <div class="age-info">${person.alter} Jahre alt</div>
+                        <div class="modal-role">${person.role} • ${person.year}</div>
+                        <a href="${person.link}" class="teams-link" target="_blank">
+                            <svg class="teams-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20.625 8.127v7.746a1.125 1.125 0 01-1.125 1.125h-7.746a1.125 1.125 0 01-1.125-1.125V8.127a1.125 1.125 0 011.125-1.125h7.746a1.125 1.125 0 011.125 1.125z"/>
+                                <path d="M9.004 10.753H2.629A1.125 1.125 0 001.5 11.878v4.5a1.125 1.125 0 001.129 1.125h6.375a1.125 1.125 0 001.125-1.125v-4.5a1.125 1.125 0 00-1.125-1.125z"/>
+                                <circle cx="6.754" cy="6.754" r="3.004"/>
+                                <path d="M18.004 6.004h-3.75v3.75h3.75z"/>
+                            </svg>
+                            Chat in Teams
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <h2>Über mich</h2>
+                    <p>${person.fullProfile.about}</p>
+                </div>
+                <div class="modal-section">
+                    <h2>Kompetenzen</h2>
+                    <ul>
+                        ${person.fullProfile.skills.map(skill => `<li>${skill}</li>`).join('')}
+                    </ul>
+                </div>
+                <div class="modal-section">
+                    <h2>Ziele</h2>
+                    <p>${person.fullProfile.goals}</p>
+                </div>
+                <div class="modal-section">
+                    <h2>Interessen & Hobbys</h2>
+                    <p>${person.fullProfile.hobbies}</p>
+                </div>
+            `;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('modal').classList.contains('active')) {
+                if (e.key === 'Escape') closeModal();
+            } else if (!isGalleryView) {
+                if (e.key === 'ArrowLeft') navigate(-1);
+                if (e.key === 'ArrowRight') navigate(1);
+            }
+        });
+
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') closeModal();
+        });
+
+        initCarousel();
+        initGallery();
+    </script>
+</body>
+</html>
