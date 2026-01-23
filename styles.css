@@ -81,7 +81,6 @@ select:focus {
 	flex: 2;
 }
 
-
 .floor-plan-container {
 	padding: 30px;
     min-width: max-content;
@@ -110,50 +109,61 @@ select:focus {
 	border: 3px solid transparent;
 	cursor: pointer;
 	transition: all 0.3s;
-	background: rgba(102, 126, 234, 0.37);
+	background: transparent;
 }
 
-.room:hover {
-	background: rgba(28, 46, 124, 0.556);
-	border-color: #667eea;
+/* Availability states (lowest priority) */
+.room.available {
+	background: rgba(40, 167, 69, 0.2);
+	border-color: #28a745;
+}
+
+.room.booked {
+	background: rgba(220, 53, 69, 0.2);
+	border-color: #dc3545;
+}
+
+/* Hover effect */
+.room.available:hover {
+	background: rgba(40, 167, 69, 0.4);
+	border-color: #28a745;
 	z-index: 10;
 }
 
-.room.highlight-destination {
-	background: rgba(180, 119, 39, 0.658);
-	border-color: rgba(217, 141, 40, 0.4);
-	z-index: 15;
-	animation: pulse 1.5s infinite;
+.room.booked:hover {
+	background: rgba(220, 53, 69, 0.4);
+	border-color: #dc3545;
+	z-index: 10;
 }
 
-.room.highlight-origin {
-	background: rgba(180, 119, 39, 0.658);
-	border-color: rgba(217, 141, 40, 0.4);
-	z-index: 15;
-	animation: pulse 1.5s infinite;
-}
-
+/* Search highlight (medium priority) */
 .room.highlight-search {
-	background: rgba(255, 193, 7, 0.4);
-	border-color: #ffc107;
+	background: rgba(255, 193, 7, 0.5) !important;
+	border-color: #ffc107 !important;
+	z-index: 15;
+	animation: pulse 1.5s infinite;
+}
+
+/* Origin/Destination highlights (highest priority) */
+.room.highlight-origin,
+.room.highlight-destination {
+	background: rgba(255, 165, 0, 0.6) !important;
+	border-color: #ff8c00 !important;
 	z-index: 15;
 	animation: pulse 1.5s infinite;
 }
 
 @keyframes pulse {
-
 	0%,
 	100% {
 		transform: scale(1);
 		opacity: 1;
 	}
-
 	50% {
 		transform: scale(1.05);
 		opacity: 0.8;
 	}
 }
-
 
 .tooltip {
   position: absolute;
@@ -185,15 +195,4 @@ select:focus {
 .info-box p {
 	margin: 5px 0;
 	color: #495057;
-}
-
-
-.room.highlight-origin.highlight-search {
-  background: rgba(220, 53, 69, 0.4);
-  border-color: #dc3545;
-}
-
-.room.highlight-destination.highlight-search {
-  background: rgba(40, 167, 69, 0.4);
-  border-color: #28a745;
 }

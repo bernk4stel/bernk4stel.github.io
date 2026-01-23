@@ -165,7 +165,16 @@ function applyAvailabilityVisuals() {
   document.querySelectorAll('.room').forEach(div => {
     const room = rooms.find(r => r.name === div.dataset.roomName);
     if (!room) return;
-    div.style.borderColor = room.available ? '#28a745' : '#dc3545';
+    
+    // Remove previous availability classes
+    div.classList.remove('available', 'booked');
+    
+    // Add availability class
+    if (room.available) {
+      div.classList.add('available');
+    } else {
+      div.classList.add('booked');
+    }
 
     // Tooltip text
     div.dataset.tooltipText = room.available
@@ -178,7 +187,6 @@ function applyAvailabilityVisuals() {
     maybeRedrawLine();
   }
 }
-
 
     function showTooltip(el) {
       tooltip.textContent = el.dataset.tooltipText || el.dataset.roomName || '';
